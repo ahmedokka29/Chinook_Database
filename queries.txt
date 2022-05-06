@@ -1,0 +1,47 @@
+q1
+
+SELECT g.Name "Genre Name", count(t.GenreId) "Number of Songs per Genre"
+FROM Genre g
+JOIN Track t on t.GenreId = g.GenreId
+JOIN InvoiceLine il on il.TrackId = t.TrackId
+GROUP by 1
+ORDER by 2
+
+-----------------------------------------------------------------------
+q2
+
+SELECT DISTINCT a.ArtistId ,a.Name "Artist Name",count(*) Songs
+FROM Artist a
+JOIN Album on Album.ArtistId = a.ArtistId
+JOIN Track on Track.AlbumId = Album.AlbumId 
+JOIN Genre g on g.GenreId = Track.GenreId
+WHERE g.Name in ('Rock')
+GROUP by 1,2
+ORDER by Songs DESC
+LIMIT 10;
+-----------------------------------------------------------------------
+q3
+
+SELECT DISTINCT a.Name "Genre Name" , SUM(il.Quantity * il.UnitPrice) "Amount Spent" , c.CustomerId , c.FirstName Name
+FROM Artist a
+JOIN Album on Album.ArtistId = a.ArtistId
+JOIN Track on Track.AlbumId = Album.AlbumId
+JOIN InvoiceLine il on il.TrackId = Track.TrackId
+JOIN Invoice i on i.InvoiceId = il.InvoiceId
+JOIN Customer c on c.CustomerId = i.CustomerId
+WHERE a.Name in ('Metallica')
+GROUP by i.CustomerId
+ORDER by 2 DESC
+-----------------------------------------------------------------------
+q4
+
+SELECT DISTINCT a.Name "Artist Name" , (sum(il.UnitPrice*il.Quantity)) Amout_Spent
+FROM Artist a
+JOIN Album on Album.ArtistId = a.ArtistId
+JOIN Track on Track.AlbumId = Album.AlbumId
+JOIN InvoiceLine il on il.TrackId = Track.TrackId
+JOIN Invoice i on i.InvoiceId = il.InvoiceId
+JOIN Customer c on c.CustomerId = i.CustomerId
+GROUP by 1
+ORDER by 2 DESC
+LIMIT 10
